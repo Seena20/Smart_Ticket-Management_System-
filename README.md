@@ -22,4 +22,4 @@ Smart Ticket Management System is a web-based application designed to create, ma
 The main objective of this project is to simplify ticket management and provide an organized platform for handling user requests and support issues.
 
 ## Author
-Sheena 
+Seena 
