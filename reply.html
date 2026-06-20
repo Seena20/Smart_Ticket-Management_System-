@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Reply Ticket</title>
+</head>
+<body>
+
+<h2>Reply to Ticket</h2>
+
+<p><b>Name:</b> {{t.name}}</p>
+<p><b>Issue:</b> {{t.issue}}</p>
+
+<form method="POST">
+    <textarea name="response" placeholder="Write reply..." required></textarea>
+    <br><br>
+    <button type="submit">Submit Reply</button>
+</form>
+
+<br>
+<a href="/tickets">Back</a>
+
+</body>
+</html>

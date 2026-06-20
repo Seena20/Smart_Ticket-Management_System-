@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Smart Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body{
+            font-family: Arial;
+            margin:0;
+            background: linear-gradient(135deg,#1d2671,#c33764);
+            color:white;
+        }
+
+        h1{
+            text-align:center;
+            padding:20px;
+        }
+
+        .cards{
+            display:flex;
+            justify-content:center;
+            gap:20px;
+            flex-wrap:wrap;
+        }
+
+        .card{
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            padding:20px;
+            width:220px;
+            border-radius:15px;
+            text-align:center;
+            box-shadow:0 8px 20px rgba(0,0,0,0.3);
+            transition:0.3s;
+        }
+
+        .card:hover{
+            transform:scale(1.05);
+        }
+
+        .card h2{
+            font-size:40px;
+            margin:10px 0;
+        }
+
+        .buttons{
+            text-align:center;
+            margin:20px;
+        }
+
+        .buttons a{
+            text-decoration:none;
+            padding:10px 20px;
+            background:white;
+            color:black;
+            border-radius:8px;
+            margin:10px;
+            display:inline-block;
+            font-weight:bold;
+        }
+
+        .charts{
+            display:flex;
+            justify-content:center;
+            gap:40px;
+            flex-wrap:wrap;
+            margin-top:30px;
+        }
+
+        .chart-box{
+            width:300px;
+            height:300px;
+            background:white;
+            padding:15px;
+            border-radius:15px;
+        }
+
+        table{
+            margin:auto;
+            margin-top:30px;
+            width:80%;
+            background:white;
+            color:black;
+            border-collapse:collapse;
+            border-radius:10px;
+            overflow:hidden;
+        }
+
+        th{
+            background:#333;
+            color:white;
+        }
+
+        th,td{
+            padding:10px;
+            text-align:center;
+        }
+
+        tr:nth-child(even){
+            background:#f2f2f2;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div style="display:flex; justify-content:space-between; padding:15px; background:#111; color:white;">
+    <div>🎫 Ticket System</div>
+
+    <div>
+        Welcome, {{ user.username }} |
+        <a href="/logout" style="color:lightblue;">Logout</a>
+    </div>
+</div>
+
+<h1>🎫 Smart Ticket Dashboard</h1>
+
+<div class="cards">
+    <div class="card">
+        <h3>Total</h3>
+        <h2>{{total}}</h2>
+    </div>
+
+    <div class="card">
+        <h3>Open</h3>
+        <h2>{{open}}</h2>
+    </div>
+
+    <div class="card">
+        <h3>Closed</h3>
+        <h2>{{closed}}</h2>
+    </div>
+</div>
+
+<div class="cards">
+    <div class="card">
+        <h3>High 🔴</h3>
+        <h2>{{high}}</h2>
+    </div>
+
+    <div class="card">
+        <h3>Medium 🟡</h3>
+        <h2>{{medium}}</h2>
+    </div>
+
+    <div class="card">
+        <h3>Low 🟢</h3>
+        <h2>{{low}}</h2>
+    </div>
+</div>
+
+<div class="buttons">
+    <a href="/add">➕ Add Ticket</a>
+    <a href="/tickets">📋 View Tickets</a>
+</div>
+
+<div class="charts">
+
+    <div class="chart-box">
+        <canvas id="statusChart"></canvas>
+    </div>
+
+    <div class="chart-box">
+        <canvas id="priorityChart"></canvas>
+    </div>
+
+</div>
+
+<h2 style="text-align:center;">🕒 Latest Tickets</h2>
+
+<table>
+<tr>
+<th>ID</th>
+<th>Name</th>
+<th>Issue</th>
+<th>Priority</th>
+</tr>
+
+{% for t in latest %}
+<tr>
+<td>{{t.id}}</td>
+<td>{{t.name}}</td>
+<td>{{t.issue}}</td>
+<td>{{t.priority}}</td>
+</tr>
+{% endfor %}
+
+</table>
+
+<script>
+new Chart(document.getElementById("statusChart"), {
+    type: "doughnut",
+    data: {
+        labels: ["Open","Closed"],
+        datasets: [{
+            data: [{{open}}, {{closed}}],
+            backgroundColor:["#4facfe","#ff6b6b"]
+        }]
+    },
+    options: {
+        responsive:true,
+        maintainAspectRatio:false
+    }
+});
+
+new Chart(document.getElementById("priorityChart"), {
+    type: "bar",
+    data: {
+        labels: ["High","Medium","Low"],
+        datasets: [{
+            data: [{{high}}, {{medium}}, {{low}}],
+            backgroundColor:["#ff4d4d","#ffa500","#2ecc71"]
+        }]
+    },
+    options: {
+        responsive:true,
+        maintainAspectRatio:false
+    }
+});
+</script>
+
+</body>
+</html>

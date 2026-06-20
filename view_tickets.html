@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All Tickets</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial;
+            background: #0f172a;
+            color: white;
+        }
+
+        h2 {
+            text-align: center;
+            margin-top: 20px;
+            letter-spacing: 1px;
+        }
+
+        .container {
+            width: 90%;
+            margin: auto;
+            margin-top: 30px;
+        }
+
+        /* SEARCH BAR */
+        .search-box {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        input {
+            padding: 12px;
+            width: 300px;
+            border-radius: 8px;
+            border: none;
+            outline: none;
+            font-size: 14px;
+        }
+
+        /* TABLE */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #1e293b;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 14px;
+            text-align: center;
+        }
+
+        th {
+            background: #334155;
+            color: #f1f5f9;
+            text-transform: uppercase;
+            font-size: 13px;
+        }
+
+        tr:nth-child(even) {
+            background: #1e293b;
+        }
+
+        tr:nth-child(odd) {
+            background: #0f172a;
+        }
+
+        tr:hover {
+            background: #334155;
+            transition: 0.3s;
+        }
+
+        /* STATUS */
+        .open {
+            color: #22c55e;
+            font-weight: bold;
+        }
+
+        .closed {
+            color: #ef4444;
+            font-weight: bold;
+        }
+
+        /* BUTTONS */
+        .btn {
+            padding: 6px 12px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 13px;
+            margin: 2px;
+            display: inline-block;
+        }
+
+        .close-btn {
+            background: #22c55e;
+            color: white;
+        }
+
+        .delete-btn {
+            background: #ef4444;
+            color: white;
+        }
+
+        .back {
+            display: block;
+            width: fit-content;
+            margin: 30px auto;
+            padding: 10px 20px;
+            background: #3b82f6;
+            border-radius: 6px;
+            text-decoration: none;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+<h2>📋 All Tickets</h2>
+
+<div class="container">
+
+    <!-- SEARCH -->
+    <div class="search-box">
+        <input type="text" id="search" placeholder="🔍 Search tickets..." onkeyup="searchTicket()">
+    </div>
+
+    <!-- TABLE -->
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Issue</th>
+            <th>Status</th>
+            <th>Response</th>
+            <th>Action</th>
+            
+        </tr>
+
+        {% for t in tickets %}
+        <tr>
+            <td>{{t.id}}</td>
+            <td>{{t.name}}</td>
+            <td>{{t.issue}}</td>
+
+            <td>
+                {% if t.status == "Open" %}
+                    <span class="open">Open</span>
+                {% else %}
+                    <span class="closed">Closed</span>
+                {% endif %}
+            </td>
+            <td>{{ t.response if t.response else "No response"}}</td>
+
+            <td>
+                <a class="btn close-btn" href="/close/{{t.id}}">Close</a>
+                <a class="btn delete-btn" href="/delete/{{t.id}}">Delete</a>
+                <a class="btn" href="/reply/ {{t.id}}">Reply</a>
+            </td>
+        </tr>
+        {% endfor %}
+
+    </table>
+
+</div>
+
+<a href="/" class="back">⬅ Back to Home</a>
+
+<!-- SEARCH SCRIPT (UNCHANGED LOGIC) -->
+<script>
+function searchTicket() {
+    let input = document.getElementById("search").value.toLowerCase();
+    let rows = document.querySelectorAll("table tr");
+
+    rows.forEach((row, index) => {
+        if(index === 0) return;
+        let text = row.innerText.toLowerCase();
+        row.style.display = text.includes(input) ? "" : "none";
+    });
+}
+</script>
+
+</body>
+</html>
